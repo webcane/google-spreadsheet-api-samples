@@ -1,5 +1,5 @@
 # google spreadsheet api samples
-Java samples for google spreadsheet api.
+Working java samples for google spreadsheet api in contrast to [Google Sheets API version 3.0 Dev Guide](https://developers.google.com/google-apps/spreadsheets/?csw=1#authorizing_requests_with_oauth_20).
 
 #### 1. spreadsheet OAuth 2.0 sample
 The application asks user to print out names of all spreadsheets on google drive.
