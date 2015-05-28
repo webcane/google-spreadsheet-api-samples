@@ -17,3 +17,7 @@
 - download and copy *client_secrets.json* to `src/main/resources`
 - add dependency for maven
 - run *Sample.launch*
+ 
+
+## possible problems
+- modify application name and data store dir
