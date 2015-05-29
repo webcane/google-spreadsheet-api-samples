@@ -48,7 +48,7 @@ public class SpreadsheetEntriesSample {
    * Be sure to specify the name of your application. If the application name is {@code null} or
    * blank, the application will log a warning. Suggested format is "MyCompany-ProductName/1.0".
    */
-  private static final String APPLICATION_NAME = "CaneBrothers-SpreadsheetSample/2.0";
+  private static final String APPLICATION_NAME = "CaneBrothers-SpreadsheetSample/3.0";
 
   /** OAuth 2.0 scopes. */
   private static final List<String> SCOPES = Arrays.asList("https://spreadsheets.google.com/feeds");
@@ -60,7 +60,7 @@ public class SpreadsheetEntriesSample {
 
   /** Directory to store user credentials. */
   private static final java.io.File DATA_STORE_DIR = new java.io.File(
-      System.getProperty("user.home"), ".store/oauth2_sample");
+      System.getProperty("user.home"), ".store/oauth2_3_sample");
 
   private static final String CLIENT_SECRETS = "/client_secrets.json";
 
