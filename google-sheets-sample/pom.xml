@@ -1,0 +1,73 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>cane.brothers.spring</groupId>
+	<artifactId>google-sheets-sample</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<name>google-sheets-sample</name>
+	<description>Integrate google sheets v4 into spring based web application</description>
+
+	<organization>
+		<name>Cane Brothers</name>
+	</organization>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>1.8</java.version>
+
+		<spring.version>1.4.2.RELEASE</spring.version>
+		<google.oauth.client.version>1.22.0</google.oauth.client.version>
+		<google.sheets.version>v4-rev38-1.22.0</google.sheets.version>
+		<google.oauth2.version>v2-rev124-1.22.0</google.oauth2.version>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<!-- Jetty Extensions To The Google OAuth Client Library For Java. -->
+		<dependency>
+			<groupId>com.google.oauth-client</groupId>
+			<artifactId>google-oauth-client-jetty</artifactId>
+			<version>${google.oauth.client.version}</version>
+		</dependency>
+
+		<!-- Google OAuth2 API V2 Rev124 1.22.0 -->
+		<dependency>
+			<groupId>com.google.apis</groupId>
+			<artifactId>google-api-services-oauth2</artifactId>
+			<version>${google.oauth2.version}</version>
+		</dependency>
+
+		<!-- Google Sheets API V4 Rev38 1.22.0 -->
+		<dependency>
+			<groupId>com.google.apis</groupId>
+			<artifactId>google-api-services-sheets</artifactId>
+			<version>${google.sheets.version}</version>
+		</dependency>
+		
+	</dependencies>
+</project>
