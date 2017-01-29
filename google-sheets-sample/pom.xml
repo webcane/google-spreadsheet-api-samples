@@ -48,10 +48,12 @@
 			<version>${spring.version}</version>
 		</dependency>
 
-		<!-- Jetty Extensions To The Google OAuth Client Library For Java. -->
+		<!-- Servlet and JDO extensions to the Google OAuth 
+			Client Library for Java.
+			Support Java servlet web applications. -->
 		<dependency>
 			<groupId>com.google.oauth-client</groupId>
-			<artifactId>google-oauth-client-jetty</artifactId>
+			<artifactId>google-oauth-client-servlet</artifactId>
 			<version>${google.oauth.client.version}</version>
 		</dependency>
 

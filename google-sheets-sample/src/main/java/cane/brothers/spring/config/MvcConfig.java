@@ -6,14 +6,14 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import cane.brothers.spring.intersept.GoogleSheetsInterceptor;
+import cane.brothers.spring.intersept.GoogleAuthorizationInterceptor;
 
 @Configuration
 public class MvcConfig extends WebMvcConfigurerAdapter {
 
 	@Bean
     public HandlerInterceptor getControllerInterceptor() {
-		HandlerInterceptor c = new GoogleSheetsInterceptor();
+		HandlerInterceptor c = new GoogleAuthorizationInterceptor();
         return c;
     }
 	

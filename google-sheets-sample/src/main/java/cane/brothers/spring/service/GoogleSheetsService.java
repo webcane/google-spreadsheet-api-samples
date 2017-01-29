@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.model.ValueRange;
 
-import cane.brothers.spring.Global;
+import cane.brothers.spring.OAuthUtil;
 
 @Service
 public class GoogleSheetsService implements GoogleSheets {
@@ -26,14 +26,16 @@ public class GoogleSheetsService implements GoogleSheets {
 	private Sheets sheetsService = null;
 
 	@Override
-	public List<List<Object>> readTable(GoogleConnection connection)  throws IOException {
-		Sheets service = getSheetsService(connection);
+	public List<List<Object>> readTable()  throws IOException {
+		Sheets service = getSheetsService();
 		return readTable(service, spreadsheetId, sheetName);
 	}
 	
-	private Sheets getSheetsService(GoogleConnection gc) throws IOException {
+	private Sheets getSheetsService() throws IOException {
 		if (this.sheetsService == null) {
-			return new Sheets.Builder(Global.HTTP_TRANSPORT, Global.JSON_FACTORY, gc.getCredentials())
+			return new Sheets.Builder(OAuthUtil.HTTP_TRANSPORT, 
+					OAuthUtil.JSON_FACTORY, 
+					OAuthUtil.getCredentials())
 					.setApplicationName(appName).build();
 		} else {
 			return this.sheetsService;

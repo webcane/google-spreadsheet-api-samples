@@ -5,5 +5,5 @@ import java.util.List;
 
 public interface GoogleSheets {
 
-	List<List<Object>> readTable(GoogleConnection gc)  throws IOException;
+	List<List<Object>> readTable()  throws IOException;
 }

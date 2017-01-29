@@ -3,17 +3,13 @@ package cane.brothers.spring.intersept;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import cane.brothers.spring.service.GoogleConnection;
+import cane.brothers.spring.OAuthUtil;
 
-public class GoogleSheetsInterceptor implements HandlerInterceptor {
+public class GoogleAuthorizationInterceptor implements HandlerInterceptor {
 
-	@Autowired
-	private GoogleConnection connection;
-	
 	@Override
 	public void afterCompletion(HttpServletRequest arg0, HttpServletResponse response, Object arg2, Exception arg3)
 			throws Exception {
@@ -27,15 +23,16 @@ public class GoogleSheetsInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object arg2) throws Exception {
 		System.out.println("Pre-handle");
-		System.out.println(request.getRequestURI());
-
-		// is connected
-		if (connection.getCredentials() == null) {
-			connection.setSourceUrl(request.getRequestURI());
+		System.out.println(request.getRequestURI());		
+		
+		// authorize on google
+		//if (OAuthUtil.getCredentials() == null) {
+		if (request.getSession().getAttribute("access_token") == null) {
+			OAuthUtil.setSourceUrl(request.getRequestURI());
 			response.sendRedirect("/ask");
 			return false;
 		}
-		
+		// is connected
 		return true;
 	}
 
