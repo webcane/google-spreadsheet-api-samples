@@ -1,114 +1,61 @@
 package cane.brothers.spring.service;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.oauth2.client.OAuth2ClientContext;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.stereotype.Service;
 
 import com.google.api.client.auth.oauth2.Credential;
-import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
-import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
+import com.google.api.client.auth.oauth2.TokenResponse;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
-import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
 
 import cane.brothers.spring.Global;
 
 @Service
 public class GoogleConnectionService implements GoogleConnection {
 
-	private static final String CLIENT_SECRETS = "/client_secrets.json";
+	@Autowired
+	private OAuth2ClientContext oAuth2ClientContext;
 
-	private static GoogleClientSecrets clientSecrets;
+	@Value("security.oauth2.client.client-id")
+	String clientId;
 
-	private String authorizationCode;
+	@Value("security.oauth2.client.clientSecret")
+	String clientSecret;
 
-	private String sourceUrl;
+	private GoogleCredential googleCredentials = null;
 
-	private Credential credential;
-
-	private InputStream getSecretFile() throws IOException {
-		return this.getClass().getResourceAsStream(CLIENT_SECRETS);
-	}
-	
+	/**
+	 * Constructor
+	 */
 	public GoogleConnectionService() {
 		System.out.println("google connection");
 	}
 
 	@Override
-	public GoogleClientSecrets getClientSecrets() {
-		if (clientSecrets == null) {
-			try {
-				// load client secrets
-				InputStreamReader clientSecretsReader = new InputStreamReader(getSecretFile());
-				clientSecrets = GoogleClientSecrets.load(Global.JSON_FACTORY, clientSecretsReader);
-
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
-		return clientSecrets;
-	}
-
-	@Override
 	public Credential getCredentials() {
-		return credential;
-	}
-
-	/**
-	 * @param code
-	 * @return
-	 * @throws IOException
-	 */
-	public boolean exchangeCode(String code) {
-		this.authorizationCode = code;
-		
-		// Step 2: Exchange --> exchange code for tokens 
-		boolean result = false;
-		String callbackUri = clientSecrets.getDetails().getRedirectUris().get(0);
-		GoogleTokenResponse response;
-		try {
-			response = new GoogleAuthorizationCodeTokenRequest(Global.HTTP_TRANSPORT, Global.JSON_FACTORY,
-					clientSecrets.getDetails().getClientId(), 
-					clientSecrets.getDetails().getClientSecret(), code, callbackUri).execute();
-			
-			// Build a new GoogleCredential instance and return it.
-			credential = new GoogleCredential.Builder()
-					.setClientSecrets(clientSecrets)
-					.setJsonFactory(Global.JSON_FACTORY)
+		if (googleCredentials == null) {
+			googleCredentials = new GoogleCredential.Builder()
 					.setTransport(Global.HTTP_TRANSPORT)
+					.setJsonFactory(Global.JSON_FACTORY)
+					.setClientSecrets(clientId, clientSecret)
 					.build()
-					.setAccessToken(response.getAccessToken())
-					.setRefreshToken(response.getRefreshToken());
-			result = true;
-		} catch (IOException e) {
-			e.printStackTrace();
+					.setFromTokenResponse(getTokenResponse());
 		}
-		// End of Step 2 <--
-		return result;
+		return googleCredentials;
 	}
-
-	public String getAuthorizationCode() {
-		return authorizationCode;
-	}
-
-	@Override
-	public String getSourceUrl() {
-		return sourceUrl;
-	}
-
-	@Override
-	public void setSourceUrl(String redirectUrl) {
-		this.sourceUrl = redirectUrl;
-	}
-
-	@Override
-	public String getRedirectUrl() {
-		if(clientSecrets != null) {
-			return clientSecrets.getDetails().getRedirectUris().get(0);
+	
+	private TokenResponse getTokenResponse() {
+		TokenResponse tr = new TokenResponse();
+		OAuth2AccessToken ac = oAuth2ClientContext.getAccessToken();
+		if (ac != null) {
+			tr.setAccessToken(ac.getValue());
+			tr.setExpiresInSeconds((long) ac.getExpiresIn());
+			tr.setTokenType(ac.getTokenType());
 		}
-		return null;
+		
+		return tr;
 	}
 
 }
